@@ -35,7 +35,7 @@ object Searcher extends App {
   val searcher: IndexSearcher = new IndexSearcher(reader)
 
   val analyzer = new StandardAnalyzer
-  val queryString: String = "lucene"
+  val queryString: String = "lucene dummies"
 
   val query: Query = new QueryParser("title", analyzer).parse(queryString)
 
@@ -43,6 +43,7 @@ object Searcher extends App {
   println(results.totalHits + " result(s).")
 
   results.scoreDocs
+    .sortWith(_.score > _.score)
     .map(item => searcher.doc(item.doc))
     .foreach((document: Document) =>
       println(s"${document.get("isbn")}\t${document.get("title")}")
